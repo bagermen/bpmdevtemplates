@@ -1,0 +1,71 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+	"name": "BPMSoft RND Dev",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".",
+		"args": {
+			"VARIANT": "3.1", // debian10
+			"USERNAME": "dotnetuser",
+			"NODE_VERSION": "14"
+		}
+	},
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {}
+		,"./feature/mono-feature": {}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [5002, 5000],
+
+	"portsAttributes": {
+		"5002": {
+			"label": "Application HTTPS",
+			"protocol": "https"
+		},
+		"5000": {
+			"label": "Application HTTP",
+			"protocol": "http"
+		}
+	},
+	
+	"workspaceMount": "source=${localWorkspaceFolder},target=/etc/bpmsoft,type=bind,consistency=cached",
+	"workspaceFolder": "/etc/bpmsoft",
+
+	"runArgs": [
+		// docker run options		
+		"--network=bpmsoft"
+		// ,"--add-host=host.docker.internal:172.26.48.1"
+	],
+	"mounts": [
+		{ "source": "dotnetuser_home_builds", "target": "/home/${containerEnv:USER}", "type": "volume" }
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "chown -R ${containerEnv:USER}:${containerEnv:USER} /etc/bpmsoft && dotnet restore",
+	"postStartCommand": "sudo /bin/systemctl default",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"alefragnani.Bookmarks"
+				,"ms-dotnettools.csharp"
+				,"ryu1kn.partial-diff"
+			],
+			"settings": {
+				// this is because of net3.1
+				"dotnet.server.useOmnisharp": true,
+    			"omnisharp.useModernNet": false
+			}
+		}
+	},
+
+	// More info: https://aka.ms/dev-containers-non-root.
+	"containerUser": "dotnetuser",
+	"remoteUser": "dotnetuser"
+}
