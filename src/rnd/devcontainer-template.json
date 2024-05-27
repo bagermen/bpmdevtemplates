@@ -1,5 +1,7 @@
 {
     "id": "rnd",
-    "version": "1",
-    "name": "rnd"
+    "version": "0.1.0",
+    "name": "rnd",
+    "description": "BPMSoft Rnd Build Template",
+    "keywords": ["rnd"]
 }
