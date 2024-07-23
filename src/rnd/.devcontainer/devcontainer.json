@@ -2,6 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
 {
 	"name": "BPMSoft RND Dev",
+	// "image": "rnd:0.1-net3.1-node14",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": {
 		"dockerfile": "Dockerfile",
@@ -32,7 +33,8 @@
 			"protocol": "http"
 		}
 	},
-	
+
+	"updateRemoteUserUID":true,
 	"workspaceMount": "source=${localWorkspaceFolder},target=/etc/bpmsoft,type=bind,consistency=cached",
 	"workspaceFolder": "/etc/bpmsoft",
 
@@ -46,7 +48,7 @@
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "chown -R ${containerEnv:USER}:${containerEnv:USER} /etc/bpmsoft && dotnet restore",
+	"postCreateCommand": "sudo chown -R ${containerEnv:USER}:${containerEnv:USER} /etc/bpmsoft",
 	"postStartCommand": "sudo /bin/systemctl default",
 
 	// Configure tool-specific properties.
