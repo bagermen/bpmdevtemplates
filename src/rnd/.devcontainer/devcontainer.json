@@ -1,23 +1,22 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+// docker buildx build --no-cache -t rnd:0.2-net8.0-node14 --build-arg VARIANT=8.0.401 .
 {
 	"name": "BPMSoft RND Dev",
-	// "image": "rnd:0.1-net3.1-node14",
+	"image": "rnd:0.2-net8.0-node14",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": ".",
-		"args": {
-			"VARIANT": "3.1", // debian10
-			"USERNAME": "dotnetuser",
-			"NODE_VERSION": "14"
-		}
-	},
+	// "build": {
+	// 	"dockerfile": "Dockerfile",
+	// 	"context": ".",
+	// 	"args": {
+	// 		"VARIANT": "0.1-net3.1-node14"
+	// 	}
+	// },
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {}
-		,"./feature/mono-feature": {}
+		// ,"./feature/mono-feature": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -34,22 +33,9 @@
 		}
 	},
 
-	"updateRemoteUserUID":true,
+	"updateRemoteUserUID": true,
 	"workspaceMount": "source=${localWorkspaceFolder},target=/etc/bpmsoft,type=bind,consistency=cached",
 	"workspaceFolder": "/etc/bpmsoft",
-
-	"runArgs": [
-		// docker run options		
-		"--network=bpmsoft"
-		// ,"--add-host=host.docker.internal:172.26.48.1"
-	],
-	"mounts": [
-		{ "source": "dotnetuser_home_builds", "target": "/home/${containerEnv:USER}", "type": "volume" }
-	],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo chown -R ${containerEnv:USER}:${containerEnv:USER} /etc/bpmsoft",
-	"postStartCommand": "sudo /bin/systemctl default",
 
 	// Configure tool-specific properties.
 	"customizations": {
@@ -58,11 +44,12 @@
 				"alefragnani.Bookmarks"
 				,"ms-dotnettools.csharp"
 				,"ryu1kn.partial-diff"
+				,"ms-dotnettools.csdevkit"
 			],
 			"settings": {
 				// this is because of net3.1
-				"dotnet.server.useOmnisharp": true,
-    			"omnisharp.useModernNet": false
+				// "dotnet.server.useOmnisharp": true,
+    			// "omnisharp.useModernNet": false
 			}
 		}
 	},

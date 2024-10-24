@@ -45,7 +45,7 @@ package_list="apt-utils \
     locales \
     sudo"
 
-if [ -n "${PACKAGES}"]; then
+if [ -n "${PACKAGES}" ]; then
     package_list="${package_list} ${PACKAGES}"
 fi
 

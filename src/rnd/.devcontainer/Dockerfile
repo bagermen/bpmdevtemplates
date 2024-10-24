@@ -1,6 +1,6 @@
-ARG VARIANT=3.1
-# ARG VARIANT=3.1-focal (ubuntu 20)
-# ARG VARIANT=3.1 (debian 10)
+ARG VARIANT=8.0.401
+# ARG VARIANT=8.0.401-noble (ubuntu 24)
+# ARG VARIANT=8.0.401 (debian 12)
 FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}
 
 # Copy library scripts to execute
@@ -16,7 +16,7 @@ ARG USER_GID=$USER_UID
 
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
-RUN bash /tmp/library-scripts/packages.sh "${UPGRADE_PACKAGES}" "libgdiplus"  \
+RUN bash /tmp/library-scripts/packages.sh "${UPGRADE_PACKAGES}" "libgdiplus python3"  \
     && bash /tmp/library-scripts/user.sh "${USERNAME}" "${USER_UID}" "${USER_GID}" \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
@@ -38,11 +38,11 @@ RUN bash /tmp/library-scripts/sshd.sh "${ADD_SSH}" "${SSHD_PORT}" "${USERNAME}" 
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Add systemctl script
-COPY library-scripts/systemctl.py /usr/local/share
+COPY library-scripts/systemctl3.py /usr/local/share
 
 RUN mkdir -p /run/systemd/system \
-    && chmod +x /usr/local/share/systemctl.py \
-    && ln -s /usr/local/share/systemctl.py /bin/systemctl
+    && chmod +x /usr/local/share/systemctl3.py \
+    && ln -s /usr/local/share/systemctl3.py /bin/systemctl
 
 # add bpmsoft service and actualize node
 COPY library-scripts/bpmsoft.service /etc/systemd/system
